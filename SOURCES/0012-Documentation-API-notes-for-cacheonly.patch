@@ -1,0 +1,26 @@
+From f8025df597685a0bd0c347b1a60c280f03bdca6f Mon Sep 17 00:00:00 2001
+From: Jaroslav Rohel <jrohel@redhat.com>
+Date: Fri, 5 Nov 2021 08:52:56 +0100
+Subject: [PATCH] Documentation: API notes for cacheonly
+
+---
+ doc/conf_ref.rst | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/doc/conf_ref.rst b/doc/conf_ref.rst
+index 83b14ec..75bcdf7 100644
+--- a/doc/conf_ref.rst
++++ b/doc/conf_ref.rst
+@@ -129,6 +129,9 @@ configuration file by your distribution to override the DNF defaults.
+     If set to ``True`` DNF will run entirely from system cache, will not update
+     the cache and will use it even in case it is expired. Default is ``False``.
+ 
++    API Notes: Must be set before repository objects are created. Plugins must set
++    this in the pre_config hook. Later changes are ignored.
++
+ .. _check_config_file_age-label:
+ 
+ ``check_config_file_age``
+--
+libgit2 1.0.1
+

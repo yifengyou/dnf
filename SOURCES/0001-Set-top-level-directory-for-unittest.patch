@@ -1,0 +1,26 @@
+From 6eff0fe7850624791f049a17a41d779915f30f94 Mon Sep 17 00:00:00 2001
+From: Pavla Kratochvilova <pkratoch@redhat.com>
+Date: Wed, 19 May 2021 12:58:30 +0200
+Subject: [PATCH] Set top-level directory for unittest
+
+In some build environments, the top-level directory is not added to
+the sys.path and the tests fail. This fixes the issue.
+---
+ tests/CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/CMakeLists.txt b/tests/CMakeLists.txt
+index 77a4894..b7f4031 100644
+--- a/tests/CMakeLists.txt
++++ b/tests/CMakeLists.txt
+@@ -1,6 +1,6 @@
+ ADD_TEST(
+     NAME test
+-    COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s tests
++    COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s tests -t ${PROJECT_SOURCE_DIR}
+     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+ 
+ # For libdnf built with sanitizers, has no effect otherwise.
+--
+libgit2 1.0.1
+

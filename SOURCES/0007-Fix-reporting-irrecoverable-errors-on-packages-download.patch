@@ -1,0 +1,81 @@
+From f5cb86b83aedaa18fd784d06d8f1479b9127c6f5 Mon Sep 17 00:00:00 2001
+From: Marek Blaha <mblaha@redhat.com>
+Date: Wed, 6 Oct 2021 09:43:37 +0200
+Subject: [PATCH] Fix reporting irrecoverable errors on packages download
+
+The original _irrecoverable property returns random dictionary - either
+packages irrecoverable errors, or global fatal error or even new empty
+dictionary. This makes it prone to programmer errors like:
+
+errs._irrecoverable[pkg] = [err]
+
+which may lead to setting the error into the newly created empty
+dictionary instead of packages errors dictionary as intended.
+
+I turned the property to method which I consider more clear.
+---
+ dnf/base.py |  8 ++++----
+ dnf/repo.py |  9 ++++-----
+ 2 files changed, 8 insertions(+), 9 deletions(-)
+
+diff --git a/dnf/base.py b/dnf/base.py
+index 0949ddf..b0a378c 100644
+--- a/dnf/base.py
++++ b/dnf/base.py
+@@ -1165,8 +1165,8 @@ class Base(object):
+                 progress.start(len(payloads), est_remote_size)
+             errors = dnf.repo._download_payloads(payloads, drpm)
+ 
+-            if errors._irrecoverable:
+-                raise dnf.exceptions.DownloadError(errors._irrecoverable)
++            if errors._irrecoverable():
++                raise dnf.exceptions.DownloadError(errors._irrecoverable())
+ 
+             remote_size = sum(errors._bandwidth_used(pload)
+                               for pload in payloads)
+@@ -1191,8 +1191,8 @@ class Base(object):
+                 progress.start(len(payloads), est_remote_size)
+                 errors = dnf.repo._download_payloads(payloads, drpm)
+ 
+-                if errors._irrecoverable:
+-                    raise dnf.exceptions.DownloadError(errors._irrecoverable)
++                if errors._irrecoverable():
++                    raise dnf.exceptions.DownloadError(errors._irrecoverable())
+ 
+                 remote_size += \
+                     sum(errors._bandwidth_used(pload) for pload in payloads)
+diff --git a/dnf/repo.py b/dnf/repo.py
+index b5c9849..b454e98 100644
+--- a/dnf/repo.py
++++ b/dnf/repo.py
+@@ -112,7 +112,7 @@ def _download_payloads(payloads, drpm):
+             errs._skipped.add(pkg)
+             continue
+         pkg.repo._repo.expire()
+-        errs._irrecoverable[pkg] = [err]
++        errs._pkg_irrecoverable[pkg] = [err]
+ 
+     return errs
+ 
+@@ -131,15 +131,14 @@ def _update_saving(saving, payloads, errs):
+ 
+ class _DownloadErrors(object):
+     def __init__(self):
+-        self._val_irrecoverable = {}
++        self._pkg_irrecoverable = {}
+         self._val_recoverable = {}
+         self._fatal = None
+         self._skipped = set()
+ 
+-    @property
+     def _irrecoverable(self):
+-        if self._val_irrecoverable:
+-            return self._val_irrecoverable
++        if self._pkg_irrecoverable:
++            return self._pkg_irrecoverable
+         if self._fatal:
+             return {'': [self._fatal]}
+         return {}
+--
+libgit2 1.0.1
+

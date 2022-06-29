@@ -1,0 +1,39 @@
+From 6af9938c87cf409f886f21b59ec45c54eda6c8b2 Mon Sep 17 00:00:00 2001
+From: Jaroslav Mracek <jmracek@redhat.com>
+Date: Tue, 2 Nov 2021 14:23:22 +0100
+Subject: [PATCH] Allow destdir option with modulesync command
+
+---
+ dnf/cli/cli.py      | 2 +-
+ doc/command_ref.rst | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/dnf/cli/cli.py b/dnf/cli/cli.py
+index 6576997..a315201 100644
+--- a/dnf/cli/cli.py
++++ b/dnf/cli/cli.py
+@@ -810,7 +810,7 @@ class Cli(object):
+         if opts.destdir is not None:
+             self.base.conf.destdir = opts.destdir
+             if not self.base.conf.downloadonly and opts.command not in (
+-                    'download', 'system-upgrade', 'reposync'):
++                    'download', 'system-upgrade', 'reposync', 'modulesync'):
+                 logger.critical(_('--destdir or --downloaddir must be used with --downloadonly '
+                                   'or download or system-upgrade command.')
+                 )
+diff --git a/doc/command_ref.rst b/doc/command_ref.rst
+index f96c0ea..42aec72 100644
+--- a/doc/command_ref.rst
++++ b/doc/command_ref.rst
+@@ -182,7 +182,7 @@ Options
+ ``--downloaddir=<path>, --destdir=<path>``
+     Redirect downloaded packages to provided directory. The option has to be used together with the \-\
+     :ref:`-downloadonly <downloadonly-label>` command line option, with the
+-    ``download`` command (dnf-plugins-core) or with the ``system-upgrade`` command
++    ``download``, ``modulesync`` or ``reposync`` commands (dnf-plugins-core) or with the ``system-upgrade`` command
+     (dnf-plugins-extras).
+ 
+ .. _downloadonly-label:
+--
+libgit2 1.1.0
+

@@ -1,0 +1,200 @@
+From 6766d3af1993d48f5548746e68268e674e52bd1d Mon Sep 17 00:00:00 2001
+From: Gary Leydon <gary.leydon@yale.edu>
+Date: Fri, 21 May 2021 14:13:59 -0400
+Subject: [PATCH 1/3] add default colors to documentation
+
+---
+ doc/conf_ref.rst | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/doc/conf_ref.rst b/doc/conf_ref.rst
+index ec5bac2ab..fcaa0319f 100644
+--- a/doc/conf_ref.rst
++++ b/doc/conf_ref.rst
+@@ -498,72 +498,72 @@ configuration file by your distribution to override the DNF defaults.
+     :ref:`color <color-label>`
+ 
+     Color of available packages that are older than installed packages.
+-    The option is used during list operations.
++    The option is used during list operations. Default is dim,cyan.
+ 
+ ``color_list_available_install``
+     :ref:`color <color-label>`
+ 
+     Color of packages that are available for installation and none of their versions in installed.
+-    The option is used during list operations.
++    The option is used during list operations. Default is normal.
+ 
+ ``color_list_available_reinstall``
+     :ref:`color <color-label>`
+ 
+-    Color of available packages that are identical to installed versions and are available for reinstalls.
++    Color of available packages that are identical to installed versions and are available for reinstalls. Default is bold,underline,green.
+     The option is used during list operations.
+ 
+ ``color_list_available_upgrade``
+     :ref:`color <color-label>`
+ 
+-    Color of available packages that are newer than installed packages.
++    Color of available packages that are newer than installed packages. Default is bold,blue.
+     The option is used during list operations.
+ 
+ ``color_list_installed_extra``
+     :ref:`color <color-label>`
+ 
+     Color of installed packages that do not have any version among available packages.
+-    The option is used during list operations.
++    The option is used during list operations. Default is bold,red.
+ 
+ ``color_list_installed_newer``
+     :ref:`color <color-label>`
+ 
+     Color of installed packages that are newer than any version among available packages.
+-    The option is used during list operations.
++    The option is used during list operations. Default is bold,yellow.
+ 
+ ``color_list_installed_older``
+     :ref:`color <color-label>`
+ 
+     Color of installed packages that are older than any version among available packages.
+-    The option is used during list operations.
++    The option is used during list operations. Default is bold.
+ 
+ ``color_list_installed_reinstall``
+     :ref:`color <color-label>`
+ 
+     Color of installed packages that are among available packages and can be reinstalled.
+-    The option is used during list operations.
++    The option is used during list operations. Default is normal.
+ 
+ ``color_search_match``
+     :ref:`color <color-label>`
+ 
+-    Color of patterns matched in search output.
++    Color of patterns matched in search output. Default is bold.
+ 
+ ``color_update_installed``
+     :ref:`color <color-label>`
+ 
+-    Color of removed packages.
++    Color of removed packages. Default is normal.
+     This option is used during displaying transactions.
+ 
+ ``color_update_local``
+     :ref:`color <color-label>`
+ 
+     Color of local packages that are installed from the @commandline repository.
+-    This option is used during displaying transactions.
++    This option is used during displaying transactions. Default is bold.
+ 
+ ``color_update_remote``
+     :ref:`color <color-label>`
+ 
+     Color of packages that are installed/upgraded/downgraded from remote repositories.
+-    This option is used during displaying transactions.
++    This option is used during displaying transactions. Default is normal.
+ 
+ 
+ ==============
+-- 
+2.31.1
+
+
+From 276e3b1d19bfad2a72f75ecbcce478e4f1e575db Mon Sep 17 00:00:00 2001
+From: Gary Leydon <gary.leydon@yale.edu>
+Date: Fri, 21 May 2021 14:16:21 -0400
+Subject: [PATCH 2/3] add author
+
+---
+ AUTHORS | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/AUTHORS b/AUTHORS
+index 1981dc4e7..f8c9eb832 100644
+--- a/AUTHORS
++++ b/AUTHORS
+@@ -95,3 +95,4 @@ DNF CONTRIBUTORS
+     Vladan Kudlac <vladankudlac@gmail.com>
+     Will Woods <wwoods@redhat.com>
+     Furkan Karcıoğlu <krc440002@gmail.com>
++    Gary Leydon <gary.leydon@yale.edu>
+-- 
+2.31.1
+
+
+From 5cfe87de2ecd645c2aa8b210bd98171e8dd72fe5 Mon Sep 17 00:00:00 2001
+From: Gary Leydon <gary.leydon@yale.edu>
+Date: Thu, 27 May 2021 11:52:42 -0400
+Subject: [PATCH 3/3] update colors according to
+ libdnf/libdnf/conf/ConfigMain.cpp
+
+---
+ doc/conf_ref.rst | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/doc/conf_ref.rst b/doc/conf_ref.rst
+index fcaa0319f..016bd00c2 100644
+--- a/doc/conf_ref.rst
++++ b/doc/conf_ref.rst
+@@ -498,13 +498,13 @@ configuration file by your distribution to override the DNF defaults.
+     :ref:`color <color-label>`
+ 
+     Color of available packages that are older than installed packages.
+-    The option is used during list operations. Default is dim,cyan.
++    The option is used during list operations. Default is magenta.
+ 
+ ``color_list_available_install``
+     :ref:`color <color-label>`
+ 
+     Color of packages that are available for installation and none of their versions in installed.
+-    The option is used during list operations. Default is normal.
++    The option is used during list operations. Default is bold,cyan.
+ 
+ ``color_list_available_reinstall``
+     :ref:`color <color-label>`
+@@ -534,36 +534,36 @@ configuration file by your distribution to override the DNF defaults.
+     :ref:`color <color-label>`
+ 
+     Color of installed packages that are older than any version among available packages.
+-    The option is used during list operations. Default is bold.
++    The option is used during list operations. Default is yellow.
+ 
+ ``color_list_installed_reinstall``
+     :ref:`color <color-label>`
+ 
+     Color of installed packages that are among available packages and can be reinstalled.
+-    The option is used during list operations. Default is normal.
++    The option is used during list operations. Default is cyan.
+ 
+ ``color_search_match``
+     :ref:`color <color-label>`
+ 
+-    Color of patterns matched in search output. Default is bold.
++    Color of patterns matched in search output. Default is bold,magenta.
+ 
+ ``color_update_installed``
+     :ref:`color <color-label>`
+ 
+-    Color of removed packages. Default is normal.
++    Color of removed packages. Default is red. 
+     This option is used during displaying transactions.
+ 
+ ``color_update_local``
+     :ref:`color <color-label>`
+ 
+     Color of local packages that are installed from the @commandline repository.
+-    This option is used during displaying transactions. Default is bold.
++    This option is used during displaying transactions. Default is green.
+ 
+ ``color_update_remote``
+     :ref:`color <color-label>`
+ 
+     Color of packages that are installed/upgraded/downgraded from remote repositories.
+-    This option is used during displaying transactions. Default is normal.
++    This option is used during displaying transactions. Default is bold,green.
+ 
+ 
+ ==============
+-- 
+2.31.1
+

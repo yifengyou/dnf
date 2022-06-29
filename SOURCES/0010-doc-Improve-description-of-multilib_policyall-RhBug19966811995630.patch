@@ -1,0 +1,29 @@
+From 683b92811abcb6cbbc00353010ec18e2cf655912 Mon Sep 17 00:00:00 2001
+From: Jaroslav Mracek <jmracek@redhat.com>
+Date: Mon, 6 Sep 2021 12:40:59 +0200
+Subject: [PATCH] [doc] Improve description of multilib_policy=all (RhBug:1996681,1995630)
+
+https://bugzilla.redhat.com/show_bug.cgi?id=1996681
+https://bugzilla.redhat.com/show_bug.cgi?id=1995630
+---
+ doc/conf_ref.rst | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/doc/conf_ref.rst b/doc/conf_ref.rst
+index 016bd00..83b14ec 100644
+--- a/doc/conf_ref.rst
++++ b/doc/conf_ref.rst
+@@ -351,7 +351,9 @@ configuration file by your distribution to override the DNF defaults.
+ ``multilib_policy``
+     :ref:`string <string-label>`
+ 
+-    Controls how multilib packages are treated during install operations. Can either be ``"best"`` (the default) for the depsolver to prefer packages which best match the system's architecture, or ``"all"`` to install all available packages with compatible architectures.
++    Controls how multilib packages are treated during install operations. Can either be ``"best"`` (the default) for
++    the depsolver to prefer packages which best match the system's architecture, or ``"all"`` to install packages for
++    all available architectures.
+ 
+ .. _obsoletes_conf_option-label:
+ 
+--
+libgit2 1.0.1
+

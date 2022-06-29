@@ -1,0 +1,36 @@
+From b05f4589e4afb69240ae2001246a5ffb5d6b1b90 Mon Sep 17 00:00:00 2001
+From: Aleš Matěj <amatej@redhat.com>
+Date: Thu, 3 Jun 2021 11:23:31 +0200
+Subject: [PATCH] Lower _pkgverify_level to signature for signature checking with rpmkeys
+
+We don't want to be veryfing digests as well when checking signatures.
+It would break legacy package installation in FIPS mode due to MD5
+digest being unverifiable (see https://access.redhat.com/solutions/5221661)
+
+Follow up for https://github.com/rpm-software-management/dnf/pull/1753
+---
+ dnf/rpm/miscutils.py | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/dnf/rpm/miscutils.py b/dnf/rpm/miscutils.py
+index 9d5b286..46ef475 100644
+--- a/dnf/rpm/miscutils.py
++++ b/dnf/rpm/miscutils.py
+@@ -66,11 +66,10 @@ def _verifyPackageUsingRpmkeys(package, installroot):
+         _logger.critical(_('Cannot find rpmkeys executable to verify signatures.'))
+         return 2
+ 
+-    # "--define=_pkgverify_level all" enforces signature checking;
+-    # "--define=_pkgverify_flags 0x0" ensures that all signatures and digests
+-    # are checked.
++    # "--define=_pkgverify_level signature" enforces signature checking;
++    # "--define=_pkgverify_flags 0x0" ensures that all signatures are checked.
+     args = ('rpmkeys', '--checksig', '--root', installroot, '--verbose',
+-            '--define=_pkgverify_level all', '--define=_pkgverify_flags 0x0',
++            '--define=_pkgverify_level signature', '--define=_pkgverify_flags 0x0',
+             '-')
+     with subprocess.Popen(
+             args=args,
+--
+libgit2 1.0.1
+

@@ -1,0 +1,43 @@
+#!/usr/bin/bash
+
+TEMP=`getopt -o s -n dnf_pylint -- "$@"`
+
+[[ $? -eq 0 ]] || exit 1;
+eval set -- "$TEMP"
+
+TEMPLATE=--msg-template='{msg_id}: {module}:{line:3d},{column}: {msg}'
+while true ; do
+    case "$1" in
+	-s) TEMPLATE=--msg-template='{msg_id}: {module}: {msg}'; shift ;;
+	--) shift ; break ;;
+    esac
+done
+
+THIS_DIR=$(readlink -f $(dirname $0))
+FALSE_POSITIVES=$THIS_DIR/pylint_false_positives
+DISABLED=""
+
+function disable()
+{
+    DISABLED="$DISABLED $1"
+}
+
+disable "-d C0111" # docstrings
+disable "-d I0011" # locally disabled warnings
+disable "-d R0801" # similar lines
+disable "-d R0904" # too many public methods
+disable "-d R0911" # too many return statements
+disable "-d R0912" # too many branches
+disable "-d R0913" # too many arguments
+disable "-d R0903" # too few public methods
+disable "-d W0141" # used builtin 'map' function
+disable "-d W0142" # used star magic
+disable "-d W0212" # access to a protected member
+
+VAR_NAMES='--variable-rgx=[a-z_][a-z0-9_]*$'
+DUMMY_NAMES='--dummy-variables-rgx=_.*'
+MISC=--max-line-length=82
+
+pylint --rcfile=/dev/null --reports=n $DISABLED "$VAR_NAMES" "$DUMMY_NAMES" $MISC $* \
+    "$TEMPLATE" \
+    | egrep -v -f $FALSE_POSITIVES

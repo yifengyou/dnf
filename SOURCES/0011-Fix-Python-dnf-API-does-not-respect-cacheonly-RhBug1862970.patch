@@ -1,0 +1,33 @@
+From db52d259645daf8ca0ae06e829787d36171f2d5b Mon Sep 17 00:00:00 2001
+From: Jaroslav Rohel <jrohel@redhat.com>
+Date: Wed, 20 Oct 2021 09:20:03 +0200
+Subject: [PATCH] Fix: Python dnf API does not respect cacheonly (RhBug:1862970)
+
+`Repo` object has always been constructed with default synchronization
+strategy. The configuration option `cacheonly` was ignored. DNF
+application set synchronization strategy later in the `Cli` object
+during processing demands.
+
+The fix takes into account the `cacheonly` option during the construction
+of the `Repo` object. Synchronization strategy may still be overriden
+during demand processing.
+---
+ dnf/repo.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/dnf/repo.py b/dnf/repo.py
+index bb42230..1822cf0 100644
+--- a/dnf/repo.py
++++ b/dnf/repo.py
+@@ -434,7 +434,7 @@ class Repo(dnf.conf.RepoConf):
+         self._pkgdir = None
+         self._key_import = _NullKeyImport()
+         self.metadata = None  # :api
+-        self._repo.setSyncStrategy(self.DEFAULT_SYNC)
++        self._repo.setSyncStrategy(SYNC_ONLY_CACHE if parent_conf and parent_conf.cacheonly else self.DEFAULT_SYNC)
+         if parent_conf:
+             self._repo.setSubstitutions(parent_conf.substitutions)
+         self._substitutions = dnf.conf.substitutions.Substitutions()
+--
+libgit2 1.0.1
+
